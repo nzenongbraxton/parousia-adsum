@@ -1,0 +1,11 @@
+root:
+  name: 'kiosk'
+  url: '/'
+  children:
+    - name: 'admin'
+      url: '/admin'
+      children:
+        - name: 'staff'
+          url: '/admin/staff'
+        - name: 'geofence'
+          url: '/admin/geofence'
