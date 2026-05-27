@@ -1,27 +1,33 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+// use App\Http\Controllers\ProfileController;
+// use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// 1. The Kiosk Route (Root)
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+    return Inertia::render('ParousiaAdsum/Kiosk/IndexPage');
+})->name('kiosk.index');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Admin Routes Grouped by Prefix
+Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+    
+    // 2. Admin Root (/admin)
+    Route::get('/', function () {
+        return Inertia::render('ParousiaAdsum/Admin/IndexPage');
+    })->name('index');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // 3. Admin Staff (/admin/staff)
+    Route::get('/staff', function () {
+        return Inertia::render('ParousiaAdsum/Admin/StaffPage');
+    })->name('staff');
+
+    // 4. Admin Geofence (/admin/geofence)
+    Route::get('/geofence', function () {
+        return Inertia::render('ParousiaAdsum/Admin/GeofencePage');
+    })->name('geofence');
+    
 });
 
 require __DIR__.'/auth.php';
