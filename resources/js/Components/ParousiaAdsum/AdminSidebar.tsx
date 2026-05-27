@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, useRouterState } from "@tanstack/react-router";
 import { BarChart3, Users, MapPinned, ShieldCheck, QrCode } from "lucide-react";
 import {
   Sidebar,

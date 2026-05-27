@@ -70,3 +70,15 @@ TanStack Start with file-based routing, built by Lovable:
 - PHP style: Laravel Pint (PSR-12 based)
 - Frontend style: Prettier + ESLint (config in `frontend/`)
 - Root `.npmrc`: `ignore-scripts=true`, `audit=true`
+
+## AI Context & Development Rules
+
+This repository maintains a highly structured AI context directory under `.ai/` to ensure architectural integrity. Whenever you are executing tasks in this codebase, you **MUST** first load and adhere to the corresponding instructions:
+
+- **Strict Code Rules:** Refer to [.ai/rules/laravel-strict.md](file:///.ai/rules/laravel-strict.md) for type safety, Action patterns, and Inertia data mapping conventions.
+- **React/Inertia Boilerplate:** Refer to [.ai/templates/inertia-page.md](file:///.ai/templates/inertia-page.md) when building new frontend views.
+- **MySQL 8 Optimizations:** Refer to [.ai/agents/db-architect.md](file:///.ai/agents/db-architect.md) when proposing schema changes, spatial queries, or buffer configurations.
+- **Infrastructure Context:** Refer to [.ai/docs/architecture.md](file:///.ai/docs/architecture.md) for the single-tenant Hetzner VPS environment layout.
+- **Architectural History:** Refer to [.ai/memory/adr.md](file:///.ai/memory/adr.md) for logging and respecting previous design decisions.
+- **Workflow References:** Refer to [.ai/workflows/tenant-setup.md](file:///.ai/workflows/tenant-setup.md) for provisioning checklists.
+
