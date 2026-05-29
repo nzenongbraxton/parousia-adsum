@@ -48,6 +48,12 @@ Load `.ai/rules/laravel-strict.md` for full detail. Key requirements:
 - **Form Requests**: always use dedicated `php artisan make:request` classes for validation.
 - **Never pass Eloquent models to Inertia** — use `.only()` or API Resources.
 
+## Git Workflow (Post-Task Requirement)
+
+Upon successful completion of any programming or engineering task, the agent **MUST** automatically:
+1. **Stage all modifications and new files** using `git add .` (including untracked files).
+2. **Commit with explicit developer commit messages** using clear, detailed, and highly professional developer commit messages highlighting exact changes, additions, refactorings, and config values.
+
 ## Required `.ai/` context
 
 | File | Purpose |
