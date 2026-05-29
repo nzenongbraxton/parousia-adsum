@@ -6,13 +6,14 @@ namespace App\Models;
 
 use App\Enums\AttendanceStatus;
 use App\Enums\AttendanceType;
+use Database\Factories\AttendanceLogFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class AttendanceLog extends Model
 {
-    /** @use HasFactory<\Database\Factories\AttendanceLogFactory> */
+    /** @use HasFactory<AttendanceLogFactory> */
     use HasFactory;
 
     protected $fillable = [

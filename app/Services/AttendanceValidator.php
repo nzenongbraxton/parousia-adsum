@@ -15,20 +15,15 @@ final readonly class AttendanceValidator
      */
     public function verifyGeofence(User $user, float $lat, float $lon): bool
     {
-        if (DB::getDriverName() !== 'mysql') {
-            // ST_Distance_Sphere is MySQL 8 native; skip on SQLite dev/tests.
-            return true;
-        }
-
         $result = DB::selectOne(
-            "SELECT ST_Distance_Sphere(
+            'SELECT ST_Distance_Sphere(
                 POINT(companies.longitude, companies.latitude),
                 POINT(?, ?)
             ) <= companies.allowed_radius AS within_range
             FROM companies
             INNER JOIN users ON users.company_id = companies.id
             WHERE users.id = ?
-            LIMIT 1",
+            LIMIT 1',
             [$lon, $lat, $user->id]
         );
 

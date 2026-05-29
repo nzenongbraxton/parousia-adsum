@@ -12,7 +12,7 @@ Route::get('/', function () {
 
 // Admin Routes Grouped by Prefix
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
-    
+
     // 2. Admin Root (/admin)
     Route::get('/', function () {
         return Inertia::render('ParousiaAdsum/Admin/Index');
@@ -27,7 +27,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/geofence', function () {
         return Inertia::render('ParousiaAdsum/Admin/Geofence');
     })->name('geofence');
-    
+
 });
 
 require __DIR__.'/auth.php';

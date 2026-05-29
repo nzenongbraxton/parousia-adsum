@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\KioskTokenFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class KioskToken extends Model
 {
-    /** @use HasFactory<\Database\Factories\KioskTokenFactory> */
+    /** @use HasFactory<KioskTokenFactory> */
     use HasFactory;
 
     protected $fillable = [

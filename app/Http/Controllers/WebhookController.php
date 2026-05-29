@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ProcessStaffAttendance;
+use App\Actions\ProcessWebhookPayloadAction;
+use App\DTOs\WebhookPayloadData;
+use App\Http\Requests\WebhookPayloadRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 final class WebhookController extends Controller
 {
@@ -16,21 +17,13 @@ final class WebhookController extends Controller
      * Immediately dispatches the heavy lifting to a queue worker and
      * returns HTTP 200 to avoid platform-level timeouts.
      */
-    public function handleBotPayload(Request $request, string $platform): JsonResponse
-    {
-        $validated = $request->validate([
-            'platform_id' => ['required', 'string'],
-            'lat' => ['required', 'numeric', 'between:-90,90'],
-            'lon' => ['required', 'numeric', 'between:-180,180'],
-            'metadata' => ['sometimes', 'array'],
-        ]);
-
-        ProcessStaffAttendance::dispatch(
-            $platform,
-            $validated['platform_id'],
-            (float) $validated['lat'],
-            (float) $validated['lon'],
-            $validated['metadata'] ?? [],
+    public function handleBotPayload(
+        WebhookPayloadRequest $request,
+        string $platform,
+        ProcessWebhookPayloadAction $action,
+    ): JsonResponse {
+        $action->execute(
+            WebhookPayloadData::fromRequest($request, $platform)
         );
 
         return response()->json(['status' => 'accepted']);
