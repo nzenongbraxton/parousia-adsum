@@ -1,5 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { useEffect, useMemo, useState } from "react";
 import {
   ShieldCheck,
@@ -12,33 +11,19 @@ import {
   QrCode as QrCodeIcon,
   ChevronDown,
 } from "lucide-react";
-import { QRCode } from "@/components/cyber/QRCode";
-import { Button } from "@/components/ui/button";
-
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Cyber-Attendance — Kiosk Check-in" },
-      {
-        name: "description",
-        content:
-          "Scan the QR code to check in. Cyber-Attendance verifies presence with GPS, IP and SMS — instant, secure, universal.",
-      },
-    ],
-  }),
-  component: KioskPage,
-});
+import { QRCode } from "@/Components/ParousiaAdsum/QRCode";
+import { Button } from "@/Components/ui/button";
 
 function useTicker(intervalMs = 30_000) {
   const [tick, setTick] = useState(0);
   useEffect(() => {
-    const id = setInterval(() => setTick((t) => t + 1), intervalMs);
+    const id = setInterval(() => setTick((t: number) => t + 1), intervalMs);
     return () => clearInterval(id);
   }, [intervalMs]);
   return tick;
 }
 
-function KioskPage() {
+export default function KioskPage() {
   const tick = useTicker(30_000);
   const [now, setNow] = useState<Date | null>(null);
   useEffect(() => {
@@ -56,85 +41,88 @@ function KioskPage() {
   const date = now?.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" }) ?? "";
 
   return (
-    <div className="relative flex min-h-screen flex-col">
-      {/* Top bar */}
-      <header className="glass sticky top-0 z-20 flex items-center justify-between border-b px-4 py-3 md:px-8">
-        <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-[var(--shadow-glass)]">
-            <ShieldCheck className="h-5 w-5" />
-          </div>
-          <div className="leading-tight">
-            <p className="text-sm font-semibold">Cyber-Attendance</p>
-            <p className="text-[11px] text-muted-foreground">Trusted check-in kiosk</p>
-          </div>
-        </div>
-        <Button asChild variant="ghost" size="sm" className="gap-1">
-          <Link to="/admin">
-            Admin
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </Button>
-      </header>
-
-      {/* Hero */}
-      <main className="flex flex-1 flex-col items-center px-4 py-8 md:py-12">
-        <div className="w-full max-w-md md:max-w-lg">
-          <div className="glass-strong relative overflow-hidden rounded-3xl p-6 md:p-8">
-            <div className="pointer-events-none absolute inset-0 bg-gradient-trust opacity-60" />
-            <div className="relative">
-              <div className="mb-5 flex items-center justify-center gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-[color-mix(in_oklab,var(--color-success)_15%,transparent)] px-2.5 py-1 text-xs font-medium text-[color-mix(in_oklab,var(--color-success)_60%,var(--color-foreground))]">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--color-success)]" />
-                  Kiosk online
-                </span>
-              </div>
-
-              <h1 className="text-center text-2xl font-semibold tracking-tight md:text-3xl">
-                Scan to check in
-              </h1>
-              <p className="mx-auto mt-2 max-w-sm text-center text-sm text-muted-foreground">
-                Point your camera at the code. We'll verify your identity and location instantly.
-              </p>
-
-              <div className="mt-6 flex justify-center">
-                <div className="rounded-3xl bg-gradient-primary p-1.5 shadow-[var(--shadow-elevated)]">
-                  <QRCode value={sessionToken} size={260} />
-                </div>
-              </div>
-
-              <div className="mt-6 flex items-center justify-between rounded-xl bg-muted/60 px-4 py-3 text-xs">
-                <div>
-                  <p className="font-medium text-foreground" suppressHydrationWarning>{time}</p>
-                  <p className="text-muted-foreground" suppressHydrationWarning>{date}</p>
-                </div>
-                <div className="inline-flex items-center gap-1.5 text-muted-foreground">
-                  <RefreshCw className="h-3.5 w-3.5" />
-                  Rotates every 30s
-                </div>
-              </div>
-
-              <div className="mt-5 grid grid-cols-3 gap-2 text-center">
-                <Method icon={MapPin} label="GPS" />
-                <Method icon={Wifi} label="IP" />
-                <Method icon={Smartphone} label="SMS" />
-              </div>
+    <>
+      <Head title="Cyber-Attendance — Kiosk Check-in" />
+      <div className="relative flex min-h-screen flex-col">
+        {/* Top bar */}
+        <header className="glass sticky top-0 z-20 flex items-center justify-between border-b px-4 py-3 md:px-8">
+          <div className="flex items-center gap-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-[var(--shadow-glass)]">
+              <ShieldCheck className="h-5 w-5" />
+            </div>
+            <div className="leading-tight">
+              <p className="text-sm font-semibold">Cyber-Attendance</p>
+              <p className="text-[11px] text-muted-foreground">Trusted check-in kiosk</p>
             </div>
           </div>
+          <Button asChild variant="ghost" size="sm" className="gap-1">
+            <Link href="/admin">
+              Admin
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </Button>
+        </header>
 
-          <p className="mt-6 text-center text-xs text-muted-foreground">
-            Need help? Ask reception or text <span className="font-medium text-foreground">CHECKIN</span> to 55-123.
-          </p>
+        {/* Hero */}
+        <main className="flex flex-1 flex-col items-center px-4 py-8 md:py-12">
+          <div className="w-full max-w-md md:max-w-lg">
+            <div className="glass-strong relative overflow-hidden rounded-3xl p-6 md:p-8">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-trust opacity-60" />
+              <div className="relative">
+                <div className="mb-5 flex items-center justify-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[color-mix(in_oklab,var(--color-success)_15%,transparent)] px-2.5 py-1 text-xs font-medium text-[color-mix(in_oklab,var(--color-success)_60%,var(--color-foreground))]">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--color-success)]" />
+                    Kiosk online
+                  </span>
+                </div>
 
-          {/* FAQ Section */}
-          <div className="mt-10">
-            <h2 className="mb-4 text-center text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-              Common Questions
-            </h2>
-            <FaqAccordion />
+                <h1 className="text-center text-2xl font-semibold tracking-tight md:text-3xl">
+                  Scan to check in
+                </h1>
+                <p className="mx-auto mt-2 max-w-sm text-center text-sm text-muted-foreground">
+                  Point your camera at the code. We'll verify your identity and location instantly.
+                </p>
+
+                <div className="mt-6 flex justify-center">
+                  <div className="rounded-3xl bg-gradient-primary p-1.5 shadow-[var(--shadow-elevated)]">
+                    <QRCode value={sessionToken} size={260} />
+                  </div>
+                </div>
+
+                <div className="mt-6 flex items-center justify-between rounded-xl bg-muted/60 px-4 py-3 text-xs">
+                  <div>
+                    <p className="font-medium text-foreground" suppressHydrationWarning>{time}</p>
+                    <p className="text-muted-foreground" suppressHydrationWarning>{date}</p>
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 text-muted-foreground">
+                    <RefreshCw className="h-3.5 w-3.5" />
+                    Rotates every 30s
+                  </div>
+                </div>
+
+                <div className="mt-5 grid grid-cols-3 gap-2 text-center">
+                  <Method icon={MapPin} label="GPS" />
+                  <Method icon={Wifi} label="IP" />
+                  <Method icon={Smartphone} label="SMS" />
+                </div>
+              </div>
+            </div>
+
+            <p className="mt-6 text-center text-xs text-muted-foreground">
+              Need help? Ask reception or text <span className="font-medium text-foreground">CHECKIN</span> to 55-123.
+            </p>
+
+            {/* FAQ Section */}
+            <div className="mt-10">
+              <h2 className="mb-4 text-center text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                Common Questions
+              </h2>
+              <FaqAccordion />
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }
 
@@ -153,7 +141,7 @@ function FaqAccordion() {
   return (
     <div className="glass-strong overflow-hidden rounded-2xl">
       <button
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => setOpen((v: boolean) => !v)}
         className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left transition-colors hover:bg-muted/40"
         aria-expanded={open}
       >
@@ -182,12 +170,12 @@ function FaqAccordion() {
             <FaqFeature
               icon={MapPin}
               title="GPS geofence verification"
-              description="Every scan is matched against the employee’s real-time GPS coordinates. If they’re not physically inside the defined site radius, the check-in is rejected."
+              description="Every scan is matched against the employee's real-time GPS coordinates. If they're not physically inside the defined site radius, the check-in is rejected."
             />
             <FaqFeature
               icon={Wifi}
               title="IP address cross-check"
-              description="The system records the network IP of the scanning device. It must match the office or site’s whitelisted IP range, adding another layer of proof."
+              description="The system records the network IP of the scanning device. It must match the office or site's whitelisted IP range, adding another layer of proof."
             />
             <FaqFeature
               icon={Smartphone}

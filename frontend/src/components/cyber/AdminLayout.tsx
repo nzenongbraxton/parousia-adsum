@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "./AdminSidebar";
 import { Bell, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Input } from "/components/ui/input";
 
 export function AdminLayout({
   title,

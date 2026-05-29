@@ -5,9 +5,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/Components/ui/table";
 import { StatusBadge } from "./StatusBadge";
-import { recentCheckins } from "./data";
+import { recentCheckins, type Checkin } from "./data";
 import { Clock, MapPin } from "lucide-react";
 
 export function CheckinTable() {
@@ -26,7 +26,7 @@ export function CheckinTable() {
 
       {/* Mobile: stacked cards */}
       <ul className="divide-y md:hidden">
-        {recentCheckins.map((c) => (
+        {recentCheckins.map((c: Checkin) => (
           <li key={c.id} className="flex items-center gap-3 px-4 py-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-primary text-xs font-semibold text-primary-foreground">
               {c.initials}
@@ -63,7 +63,7 @@ export function CheckinTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {recentCheckins.map((c) => (
+            {recentCheckins.map((c: Checkin) => (
               <TableRow key={c.id}>
                 <TableCell>
                   <div className="flex items-center gap-3">

@@ -1,29 +1,17 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Head } from "@inertiajs/react";
 import { Users, MapPin, ShieldCheck, Activity } from "lucide-react";
-import { AdminLayout } from "@/components/cyber/AdminLayout";
-import { StatCard } from "@/components/cyber/StatCard";
-import { CheckinTable } from "@/components/cyber/CheckinTable";
+import { AdminLayout } from "@/Components/ParousiaAdsum/AdminLayout";
+import { StatCard } from "@/Components/ParousiaAdsum/StatCard";
+import { CheckinTable } from "@/Components/ParousiaAdsum/CheckinTable";
 
-export const Route = createFileRoute("/admin/")({
-  head: () => ({
-    meta: [
-      { title: "Analytics — Cyber-Attendance Admin" },
-      {
-        name: "description",
-        content:
-          "Real-time attendance analytics: GPS, IP and SMS verified check-ins across every site.",
-      },
-    ],
-  }),
-  component: AnalyticsPage,
-});
-
-function AnalyticsPage() {
+export default function AnalyticsPage() {
   return (
     <AdminLayout
       title="Analytics"
       subtitle="Today's verified check-ins across every site and method."
     >
+      <Head title="Analytics — Cyber-Attendance Admin" />
+
       <section className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
         <StatCard label="Present today" value="1,284" delta="+4.2%" icon={Users} tint="primary" />
         <StatCard label="GPS verified" value="892" delta="+6.1%" icon={MapPin} tint="success" />
@@ -66,7 +54,7 @@ function MiniChart() {
   const max = Math.max(...data);
   return (
     <div className="flex h-40 items-end gap-1.5">
-      {data.map((v, i) => (
+      {data.map((v: number, i: number) => (
         <div key={i} className="group flex-1">
           <div
             className="w-full rounded-t-md bg-gradient-primary transition-all duration-300 group-hover:opacity-80"

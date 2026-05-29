@@ -1,34 +1,33 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Head } from "@inertiajs/react";
 import { MapPinned, Plus, Radius, Save } from "lucide-react";
-import { AdminLayout } from "@/components/cyber/AdminLayout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Slider } from "@/components/ui/slider";
+import { AdminLayout } from "@/Components/ParousiaAdsum/AdminLayout";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
+import { Label } from "@/Components/ui/label";
+import { Switch } from "@/Components/ui/switch";
+import { Slider } from "@/Components/ui/slider";
 
-export const Route = createFileRoute("/admin/geofence")({
-  head: () => ({
-    meta: [
-      { title: "Geofence Settings — Cyber-Attendance" },
-      { name: "description", content: "Define check-in radii and IP allowlists per site." },
-    ],
-  }),
-  component: GeofencePage,
-});
+interface Site {
+  name: string;
+  coords: string;
+  radius: number;
+  active: boolean;
+}
 
-const sites = [
+const sites: Site[] = [
   { name: "Lagos HQ", coords: "6.5244° N, 3.3792° E", radius: 120, active: true },
   { name: "Plant 4", coords: "12.9716° N, 77.5946° E", radius: 240, active: true },
   { name: "Tokyo Office", coords: "35.6762° N, 139.6503° E", radius: 80, active: false },
 ];
 
-function GeofencePage() {
+export default function GeofencePage() {
   return (
     <AdminLayout
       title="Geofence Settings"
       subtitle="Set check-in radii, IP allowlists and SMS fallback rules."
     >
+      <Head title="Geofence Settings — Cyber-Attendance" />
+
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="glass-strong rounded-2xl p-4 md:p-5 lg:col-span-2">
           <div className="flex items-center justify-between">
@@ -38,7 +37,7 @@ function GeofencePage() {
             </Button>
           </div>
           <ul className="mt-4 space-y-3">
-            {sites.map((s) => (
+            {sites.map((s: Site) => (
               <li
                 key={s.name}
                 className="glass flex flex-col gap-3 rounded-xl p-3 md:flex-row md:items-center md:gap-4 md:p-4"

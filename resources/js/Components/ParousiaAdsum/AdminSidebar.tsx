@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from "@inertiajs/react";
 import { BarChart3, Users, MapPinned, ShieldCheck, QrCode } from "lucide-react";
 import {
   Sidebar,
@@ -11,9 +11,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar";
+} from "@/Components/ui/sidebar";
 
-const items = [
+interface NavItem {
+  title: string;
+  url: string;
+  icon: typeof BarChart3;
+}
+
+const items: NavItem[] = [
   { title: "Analytics", url: "/admin", icon: BarChart3 },
   { title: "Staff Management", url: "/admin/staff", icon: Users },
   { title: "Geofence Settings", url: "/admin/geofence", icon: MapPinned },
@@ -22,14 +28,14 @@ const items = [
 export function AdminSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
-  const path = useRouterState({ select: (r) => r.location.pathname });
-  const isActive = (url: string) =>
-    url === "/admin" ? path === "/admin" : path.startsWith(url);
+  const { url } = usePage();
+  const isActive = (itemUrl: string) =>
+    itemUrl === "/admin" ? url === "/admin" : url.startsWith(itemUrl);
 
   return (
     <Sidebar collapsible="icon" className="border-r">
       <SidebarHeader className="border-b px-3 py-4">
-        <Link to="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary text-primary-foreground shadow-[var(--shadow-glass)]">
             <ShieldCheck className="h-5 w-5" />
           </div>
@@ -46,10 +52,10 @@ export function AdminSidebar() {
           <SidebarGroupLabel>Workspace</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {items.map((item: NavItem) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={isActive(item.url)}>
-                    <Link to={item.url} className="flex items-center gap-2">
+                    <Link href={item.url} className="flex items-center gap-2">
                       <item.icon className="h-4 w-4" />
                       {!collapsed && <span>{item.title}</span>}
                     </Link>
@@ -65,8 +71,8 @@ export function AdminSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={path === "/"}>
-                  <Link to="/" className="flex items-center gap-2">
+                <SidebarMenuButton asChild isActive={url === "/"}>
+                  <Link href="/" className="flex items-center gap-2">
                     <QrCode className="h-4 w-4" />
                     {!collapsed && <span>Check-in Kiosk</span>}
                   </Link>

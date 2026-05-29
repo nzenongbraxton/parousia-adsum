@@ -1,24 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Head } from "@inertiajs/react";
 import { Plus, Search, MoreHorizontal } from "lucide-react";
-import { AdminLayout } from "@/components/cyber/AdminLayout";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { StatusBadge } from "@/components/cyber/StatusBadge";
-import { recentCheckins } from "@/components/cyber/data";
+import { AdminLayout } from "@/Components/ParousiaAdsum/AdminLayout";
+import { Input } from "@/Components/ui/input";
+import { Button } from "@/Components/ui/button";
+import { StatusBadge } from "@/Components/ParousiaAdsum/StatusBadge";
+import { recentCheckins, type Checkin } from "@/Components/ParousiaAdsum/data";
 
-export const Route = createFileRoute("/admin/staff")({
-  head: () => ({
-    meta: [
-      { title: "Staff Management — Cyber-Attendance" },
-      { name: "description", content: "Manage employees, roles and verification policies." },
-    ],
-  }),
-  component: StaffPage,
-});
-
-function StaffPage() {
+export default function StaffPage() {
   return (
     <AdminLayout title="Staff Management" subtitle="Manage employees, roles and access policies.">
+      <Head title="Staff Management — Cyber-Attendance" />
+
       <div className="glass-strong rounded-2xl p-4 md:p-5">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="relative w-full md:max-w-sm">
@@ -32,7 +24,7 @@ function StaffPage() {
         </div>
 
         <ul className="mt-4 divide-y rounded-xl border bg-card/40">
-          {recentCheckins.map((c) => (
+          {recentCheckins.map((c: Checkin) => (
             <li key={c.id} className="flex items-center gap-3 px-3 py-3 md:px-4">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-primary text-xs font-semibold text-primary-foreground">
                 {c.initials}
