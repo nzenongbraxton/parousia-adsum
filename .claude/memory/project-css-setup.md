@@ -14,3 +14,5 @@ The Laravel side (Tailwind v3 via PostCSS) has its full design system in `resour
 - `vite.config.js` uses `@vitejs/plugin-react` — **not** `@tailwindcss/vite`. Tailwind is processed via PostCSS.
 
 **Why:** The Tailwind v4 `@theme inline` block in the frontend has no equivalent in v3 — the color mappings must live in `tailwind.config.js` instead.
+
+**Committed:** All of this work landed in commit `084b13e` — "Align Laravel/Inertia frontend with monolith architecture" (43 files, 2016 insertions). Covers: component moves to `ParousiaAdsum/`, Breeze scaffold components, shadcn/ui components, `use-mobile` hook, CSS design system port, Tailwind config expansion, and `tailwindcss-animate` + `@radix-ui/react-slider` deps.
