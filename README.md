@@ -1,58 +1,105 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://banners.beyondco.de/ParousiaAdsum.png?theme=dark&package_manager=Laravel&package_name=13&pattern=architect&style=style_1&description=Cyber-Attendance+Verification+System&md=1&showWatermark=1&fontSize=100px&images=clipboard-check">
+    <img src="https://banners.beyondco.de/ParousiaAdsum.png?theme=light&package_manager=Laravel&package_name=13&pattern=architect&style=style_1&description=Cyber-Attendance+Verification+System&md=1&showWatermark=1&fontSize=100px&images=clipboard-check" alt="ParousiaAdsum">
+  </picture>
 </p>
 
-## About Laravel
+# ParousiaAdsum
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Cyber-Attendance** — an attendance verification system that prevents fake check-ins through multi-factor verification: QR codes, GPS geofencing, IP verification, and SMS confirmation.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Built on Laravel 13 with Inertia.js, React 18, and Tailwind CSS.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tech Stack
 
-## Learning Laravel
+| Layer | Technology |
+|-------|-----------|
+| Backend | PHP 8.3+, Laravel 13 |
+| Frontend | React 18, Inertia.js, TypeScript |
+| Styling | Tailwind CSS 3, shadcn/ui |
+| Database | SQLite (development), MySQL 8 (production) |
+| Cache | Redis |
+| Dev tools | Vite, Laravel Pint, PHPUnit |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Architecture
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+ParousiaAdsum follows a strict **Action Pattern** architecture:
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- **Routes** in `routes/web.php` map to Inertia page components in `resources/js/Pages/`.
+- **Controllers** are thin — they validate requests, delegate to Action classes, and return Inertia responses.
+- **Actions** (`app/Actions/`) contain all business logic as single-purpose final readonly classes.
+- **DTOs** carry validated data between layers — never pass `$request->all()` to business logic.
+- **Form Request** classes handle all input validation.
 
-## Agentic Development
+The deployment model is **single-tenant Hetzner VPS** with isolated MySQL 8 databases per client. See `.ai/docs/architecture.md` for details.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Prerequisites
+
+- PHP 8.3+
+- Composer
+- Node.js 20+
+- SQLite (development) or MySQL 8 (production)
+
+## Setup
 
 ```bash
-composer require laravel/boost --dev
+# Clone and install
+composer install
+cp .env.example .env
+php artisan key:generate
 
-php artisan boost:install
+# Database (SQLite)
+php artisan migrate
+
+# Frontend assets
+npm install --ignore-scripts
+npm run build
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+> Root `.npmrc` sets `ignore-scripts=true` — use `--ignore-scripts` when installing npm dependencies.
 
-## Contributing
+## Development
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Start the full dev environment:
+```bash
+composer dev
+```
 
-## Code of Conduct
+This runs the Laravel server, queue worker, log tail, and Vite dev server concurrently.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Individual commands
 
-## Security Vulnerabilities
+| Command | Description |
+|---------|-------------|
+| `php artisan serve` | Laravel dev server only |
+| `php artisan test` | Run all tests |
+| `php artisan test --filter=Tests\Feature\ProfileTest` | Run a single test class |
+| `./vendor/bin/pint` | Format PHP code (PSR-12) |
+| `php artisan make:request StoreAttendanceRequest` | Create a Form Request |
+| `php artisan make:migration create_attendance_records_table` | Create a migration |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Testing uses in-memory SQLite — no external services required.
+
+### Routes
+
+| URL | Page | Middleware |
+|-----|------|------------|
+| `/` | Kiosk check-in | None |
+| `/admin` | Admin dashboard | `auth`, `verified` |
+| `/admin/staff` | Staff management | `auth`, `verified` |
+| `/admin/geofence` | Geofence configuration | `auth`, `verified` |
+
+## AI Context
+
+This repository maintains structured AI guidance under `.ai/`:
+
+- **`.ai/rules/laravel-strict.md`** — coding standards, type safety, Action/DTO patterns
+- **`.ai/templates/inertia-page.md`** — boilerplate for new Inertia views
+- **`.ai/docs/architecture.md`** — Hetzner VPS deployment topology
+- **`.ai/memory/adr.md`** — architectural decision records
+- **`.ai/workflows/tenant-setup.md`** — provisioning checklists
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+[MIT](LICENSE)
