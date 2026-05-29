@@ -6,9 +6,10 @@ This document describes the architectural layout and deployment topology for **P
 
 ## 1. Architectural Philosophy
 
-While the codebase is maintained as a single monolithic repository (Laravel 12 + React Inertia), the runtime is isolated on a **per-client (tenant) basis**. 
+While the codebase is maintained as a single monolithic repository (Laravel 13 + React Inertia), the runtime is isolated on a **per-client (tenant) basis**.
 
 ### Why Single-Tenant?
+
 - **Data Isolation:** Each client gets a dedicated, isolated MySQL database on independent virtual hardware. There is zero risk of cross-tenant data leaks.
 - **Dedicated Performance:** Resource-heavy attendance checks (GPS calculations, rotating dynamic QR codes, SMS verification webhooks) do not suffer from the "noisy neighbor" problem.
 - **Regulatory Compliance:** Complies with strict data residency laws, enabling tenants to choose specific Hetzner datacenter regions (Falkenstein DE, Helsinki FI, Ashburn US, or Hillsboro US).
@@ -20,14 +21,14 @@ While the codebase is maintained as a single monolithic repository (Laravel 12 +
 
 For standard tenants, we deploy on Hetzner Cloud CX-series or CPX-series AMD EPYC virtual servers.
 
-| Component | Standard Tenant Spec | Enterprise Tenant Spec |
-| :--- | :--- | :--- |
-| **Server Instance** | Hetzner **CPX21** (shared vCPU) | Hetzner **CCX21** (dedicated vCPU) |
-| **CPU** | 3 vCPUs (AMD EPYC) | 4 vCPUs (AMD EPYC) |
-| **RAM** | 4 GB RAM | 8 GB RAM |
-| **Disk** | 80 GB NVMe SSD | 160 GB NVMe SSD |
-| **Traffic** | 20 TB / Month | 20 TB / Month |
-| **Location** | Falkenstein (DE) or Hillsboro (US) | Choice of any Hetzner Datacenter |
+| Component           | Standard Tenant Spec               | Enterprise Tenant Spec             |
+| :------------------ | :--------------------------------- | :--------------------------------- |
+| **Server Instance** | Hetzner **CPX21** (shared vCPU)    | Hetzner **CCX21** (dedicated vCPU) |
+| **CPU**             | 3 vCPUs (AMD EPYC)                 | 4 vCPUs (AMD EPYC)                 |
+| **RAM**             | 4 GB RAM                           | 8 GB RAM                           |
+| **Disk**            | 80 GB NVMe SSD                     | 160 GB NVMe SSD                    |
+| **Traffic**         | 20 TB / Month                      | 20 TB / Month                      |
+| **Location**        | Falkenstein (DE) or Hillsboro (US) | Choice of any Hetzner Datacenter   |
 
 ---
 
@@ -46,12 +47,13 @@ Every server runs a normalized, locked, and highly optimized server stack.
          ┌─────────┴─────────┐
          ▼                   ▼
     [ Static Assets ]     [ PHP-FPM 8.3/8.4 ]
-   (Vite/React Build)        (Laravel 12 Monolith)
+   (Vite/React Build)        (Laravel 13 Monolith)
                              ├── [ Redis ] (Cache, Rate Limiting, Queues)
                              └── [ MySQL 8 ] (Isolated Database)
 ```
 
 ### Components
+
 1. **Operating System:** Ubuntu 24.04 LTS (minimal, hardened).
 2. **Reverse Proxy & Web Server:** Nginx 1.26+ with HTTP/2 enabled, configured with strict SSL/TLS parameters (TLS 1.3 only).
 3. **Application Server:** PHP-FPM 8.3/8.4 running with OPcache and JIT enabled for high-performance request handling.
@@ -63,6 +65,7 @@ Every server runs a normalized, locked, and highly optimized server stack.
 ## 4. Security & Hardening
 
 Security is paramount for attendance and verification tracking.
+
 - **Firewall (UFW):** Only ports `80` (redirected to `443`), `443` (HTTPS), and `22` (custom SSH, rate-limited and restricted to VPN/deploy IP keys) are open.
 - **Fail2Ban:** Active jail policies protect against SSH brute-forcing and rapid Nginx HTTP request hammering.
 - **Database Network Isolation:** MySQL binds strictly to `127.0.0.1` and is completely inaccessible from the public internet.
@@ -76,10 +79,12 @@ Security is paramount for attendance and verification tracking.
 We leverage standard infrastructure-as-code and modern deployment integrations to automate provisioning.
 
 ### Provisioning (Server Setup)
+
 - Managed either via **Ansible Playbooks** or integrated with **Laravel Forge API**.
 - Standardized shell scripts perform hardening, install dependencies, configure Nginx virtual hosts, set up let'sencrypt, and initialize Redis/MySQL.
 
 ### Zero-Downtime Deployment
+
 Deployments are managed via GitHub Actions triggered on tags or main branch pushes to designated tenant targets.
 
 ```mermaid

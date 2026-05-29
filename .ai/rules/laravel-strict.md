@@ -1,4 +1,4 @@
-# Laravel 12 & Inertia.js Strict Development Rules
+# Laravel 13 & Inertia.js Strict Development Rules
 
 This document defines the strict coding standards and architectural patterns for the **ParousiaAdsum** Laravel backend. All backend developers and AI agents must adhere to these rules to ensure type safety, maintainability, and clean separation of concerns.
 
@@ -7,7 +7,9 @@ This document defines the strict coding standards and architectural patterns for
 ## 1. Type Safety & Modern PHP Standards
 
 ### Strict Types
+
 Every single PHP file **MUST** declare strict types at the very top of the file:
+
 ```php
 <?php
 
@@ -15,6 +17,7 @@ declare(strict_types=1);
 ```
 
 ### Type Hinting and Return Types
+
 - All class constants, properties, method arguments, and method return values must have explicit type declarations.
 - Use PHP 8.2+ union/intersection types and `mixed` only when absolutely necessary.
 - Avoid docblock type annotations unless specifying array shapes or generic collection types for static analysis (e.g., PHPStan/Larastan).
@@ -44,19 +47,23 @@ class AttendanceController extends Controller {
 Controllers must only handle HTTP-level concerns: receiving requests, routing validation, invoking actions/business logic, and returning responses. They **MUST NOT** contain business logic, direct database queries, or extensive data transformation.
 
 ### Controller Constraints
+
 - **Maximum 1 Action/Service invocation per controller method.**
 - **No inline DB queries, raw SQL, or complex Eloquent builders.**
 - **No manual transaction management (`DB::beginTransaction`).**
 - **Always return an Inertia response, JSON API response, or Redirect.**
 
 ### Action Classes (Domain Logic)
+
 All business logic must reside in dedicated, single-responsibility **Action** classes inside `app/Actions`.
+
 - Actions must do one thing and one thing only.
 - Actions should be named with an active verb (e.g., `VerifyCheckInAction`, `ProvisionTenantAction`).
 - Actions must expose a single public method, preferably `execute()` or `__invoke()`.
 - Inject dependencies via the constructor using PHP constructor property promotion.
 
 #### Example Action:
+
 ```php
 <?php
 
@@ -75,7 +82,7 @@ final readonly class VerifyAndRecordCheckInAction
     {
         return DB::transaction(function () use ($user, $data) {
             // Geofencing & Verification Logic goes here...
-            
+
             return AttendanceRecord::create([
                 'user_id' => $user->id,
                 'verified_at' => now(),
@@ -90,6 +97,7 @@ final readonly class VerifyAndRecordCheckInAction
 ```
 
 #### Example Slim Controller:
+
 ```php
 <?php
 
@@ -163,6 +171,7 @@ final readonly class CheckInData
 ## 4. Inertia.js Integration Rules
 
 When returning data to the React frontend via Inertia:
+
 1. **Never pass entire Eloquent models to the frontend.** Always use **API Resources** or explicit `.only()` arrays to prevent leaking sensitive fields (e.g., `password`, `remember_token`, internal flags).
 2. **Handle global shared props** strictly inside `HandleInertiaRequests.php` (e.g., authenticated user, tenant settings, flash messages).
 3. **Use strict snake_case for backend data keys** and ensure they map cleanly to frontend camelCase if using a conversion layer, or maintain consistent naming.
