@@ -52,7 +52,9 @@ export default function KioskPage() {
 
   return (
     <>
-      <Head title={`${import.meta.env.VITE_APP_NAME || "ParousiaAdsum"} — Kiosk Check-in`} />
+      <Head
+        title={`${import.meta.env.VITE_APP_NAME || "ParousiaAdsum"} — Kiosk Check-in`}
+      />
       <div className="relative flex min-h-screen flex-col">
         {/* Top bar */}
         <header className="glass sticky top-0 z-20 flex items-center justify-between border-b px-4 py-3 md:px-8">
@@ -183,8 +185,9 @@ function FaqAccordion() {
       >
         <div className="space-y-4 px-5 pb-5">
           <p className="text-sm leading-relaxed text-muted-foreground">
-            No. {import.meta.env.VITE_APP_NAME || "ParousiaAdsum"} uses a multi-layered verification system
-            that makes faking a check-in practically impossible:
+            No. {import.meta.env.VITE_APP_NAME || "ParousiaAdsum"} uses a
+            multi-layered verification system that makes faking a check-in
+            practically impossible:
           </p>
 
           <div className="space-y-3">

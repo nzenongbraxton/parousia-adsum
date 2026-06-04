@@ -10,13 +10,40 @@ export default function AnalyticsPage() {
       title="Analytics"
       subtitle="Today's verified check-ins across every site and method."
     >
-      <Head title={`Analytics — ${import.meta.env.VITE_APP_NAME || "ParousiaAdsum"} Admin`} />
+      <Head
+        title={`Analytics — ${import.meta.env.VITE_APP_NAME || "ParousiaAdsum"} Admin`}
+      />
 
       <section className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-        <StatCard label="Present today" value="1,284" delta="+4.2%" icon={Users} tint="primary" />
-        <StatCard label="GPS verified" value="892" delta="+6.1%" icon={MapPin} tint="success" />
-        <StatCard label="IP verified" value="318" delta="+1.8%" icon={ShieldCheck} tint="info" />
-        <StatCard label="Flagged" value="14" delta="-12%" positive={false} icon={Activity} tint="warning" />
+        <StatCard
+          label="Present today"
+          value="1,284"
+          delta="+4.2%"
+          icon={Users}
+          tint="primary"
+        />
+        <StatCard
+          label="GPS verified"
+          value="892"
+          delta="+6.1%"
+          icon={MapPin}
+          tint="success"
+        />
+        <StatCard
+          label="IP verified"
+          value="318"
+          delta="+1.8%"
+          icon={ShieldCheck}
+          tint="info"
+        />
+        <StatCard
+          label="Flagged"
+          value="14"
+          delta="-12%"
+          positive={false}
+          icon={Activity}
+          tint="warning"
+        />
       </section>
 
       <section className="mt-5 grid gap-4 md:mt-6 lg:grid-cols-3">
@@ -24,7 +51,9 @@ export default function AnalyticsPage() {
           <div className="mb-3 flex items-center justify-between">
             <div>
               <h3 className="text-sm font-semibold">Hourly check-in volume</h3>
-              <p className="text-xs text-muted-foreground">Local time • all sites</p>
+              <p className="text-xs text-muted-foreground">
+                Local time • all sites
+              </p>
             </div>
             <span className="text-xs text-muted-foreground">Last 12h</span>
           </div>
@@ -32,7 +61,9 @@ export default function AnalyticsPage() {
         </div>
         <div className="glass rounded-2xl p-4 md:p-5">
           <h3 className="text-sm font-semibold">Verification mix</h3>
-          <p className="text-xs text-muted-foreground">How staff checked in today</p>
+          <p className="text-xs text-muted-foreground">
+            How staff checked in today
+          </p>
           <div className="mt-4 space-y-3">
             <Bar label="GPS" value={64} color="var(--color-success)" />
             <Bar label="IP" value={23} color="var(--color-primary)" />
@@ -66,7 +97,15 @@ function MiniChart() {
   );
 }
 
-function Bar({ label, value, color }: { label: string; value: number; color: string }) {
+function Bar({
+  label,
+  value,
+  color,
+}: {
+  label: string;
+  value: number;
+  color: string;
+}) {
   return (
     <div>
       <div className="mb-1 flex items-center justify-between text-xs">
