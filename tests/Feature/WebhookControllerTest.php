@@ -112,7 +112,7 @@ final class WebhookControllerTest extends TestCase
         $response->assertStatus(200)
             ->assertJson(['status' => 'accepted']);
 
-        Queue::assertDispatched(ProcessStaffAttendance::class, function (ProcessStaffAttendance $job) use ($payload) {
+        Queue::assertPushed(ProcessStaffAttendance::class, function (ProcessStaffAttendance $job) use ($payload) {
             return $job->platform === 'telegram'
                 && $job->platformId === $payload['platform_id']
                 && $job->lat === $payload['lat']

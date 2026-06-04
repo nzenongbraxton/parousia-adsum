@@ -30,4 +30,16 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
 });
 
+// 5. Dashboard Redirect (Breeze compatibility)
+Route::get('/dashboard', function () {
+    return redirect()->route('admin.index');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+// 6. User Profile Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
 require __DIR__.'/auth.php';
