@@ -47,7 +47,7 @@ final class WebhookControllerTest extends TestCase
         $response = $this->postJson('/api/webhooks/telegram', $payload);
 
         $response->assertStatus(401)
-            ->assertJsonPath('message', 'Missing webhook signature header.');
+            ->assertJsonPath('message', 'Missing Telegram secret token header.');
     }
 
     public function test_webhook_rejects_invalid_signature(): void
@@ -61,11 +61,11 @@ final class WebhookControllerTest extends TestCase
         $response = $this->postJson(
             '/api/webhooks/telegram',
             $payload,
-            ['X-Webhook-Signature' => 'invalid_signature_hash']
+            ['X-Telegram-Bot-Api-Secret-Token' => 'invalid_secret_token']
         );
 
         $response->assertStatus(401)
-            ->assertJsonPath('message', 'Invalid webhook signature.');
+            ->assertJsonPath('message', 'Invalid Telegram secret token.');
     }
 
     public function test_webhook_validates_required_parameters(): void
@@ -76,13 +76,10 @@ final class WebhookControllerTest extends TestCase
             'lon' => 200.0, // Invalid longitude (between -180 and 180)
         ];
 
-        $content = json_encode($payload);
-        $signature = $this->getSignature($content);
-
         $response = $this->postJson(
             '/api/webhooks/telegram',
             $payload,
-            ['X-Webhook-Signature' => $signature]
+            ['X-Telegram-Bot-Api-Secret-Token' => $this->secret]
         );
 
         $response->assertStatus(422)
@@ -100,13 +97,10 @@ final class WebhookControllerTest extends TestCase
             'metadata' => ['device' => 'iPhone 15'],
         ];
 
-        $content = json_encode($payload);
-        $signature = $this->getSignature($content);
-
         $response = $this->postJson(
             '/api/webhooks/telegram',
             $payload,
-            ['X-Webhook-Signature' => $signature]
+            ['X-Telegram-Bot-Api-Secret-Token' => $this->secret]
         );
 
         $response->assertStatus(200)

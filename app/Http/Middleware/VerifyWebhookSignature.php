@@ -22,6 +22,22 @@ final class VerifyWebhookSignature
             abort(500, 'Webhook secret is not configured.');
         }
 
+        $platform = $request->route('platform');
+
+        if ($platform === 'telegram') {
+            $token = $request->header('X-Telegram-Bot-Api-Secret-Token');
+
+            if (! is_string($token)) {
+                abort(401, 'Missing Telegram secret token header.');
+            }
+
+            if (! hash_equals($secret, $token)) {
+                abort(401, 'Invalid Telegram secret token.');
+            }
+
+            return $next($request);
+        }
+
         $signature = $request->header('X-Webhook-Signature');
 
         if (! is_string($signature)) {
