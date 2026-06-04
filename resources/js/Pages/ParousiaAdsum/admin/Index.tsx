@@ -10,7 +10,7 @@ export default function AnalyticsPage() {
       title="Analytics"
       subtitle="Today's verified check-ins across every site and method."
     >
-      <Head title="Analytics — Cyber-Attendance Admin" />
+      <Head title={`Analytics — ${import.meta.env.VITE_APP_NAME || "ParousiaAdsum"} Admin`} />
 
       <section className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
         <StatCard label="Present today" value="1,284" delta="+4.2%" icon={Users} tint="primary" />

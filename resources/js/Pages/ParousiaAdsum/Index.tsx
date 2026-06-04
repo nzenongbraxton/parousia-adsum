@@ -34,15 +34,25 @@ export default function KioskPage() {
 
   const sessionToken = useMemo(
     () => `cyber-att://session/${Date.now().toString(36)}-${tick}`,
-    [tick]
+    [tick],
   );
 
-  const time = now?.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) ?? "";
-  const date = now?.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" }) ?? "";
+  const time =
+    now?.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    }) ?? "";
+  const date =
+    now?.toLocaleDateString([], {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    }) ?? "";
 
   return (
     <>
-      <Head title="Cyber-Attendance — Kiosk Check-in" />
+      <Head title={`${import.meta.env.VITE_APP_NAME || "ParousiaAdsum"} — Kiosk Check-in`} />
       <div className="relative flex min-h-screen flex-col">
         {/* Top bar */}
         <header className="glass sticky top-0 z-20 flex items-center justify-between border-b px-4 py-3 md:px-8">
@@ -52,7 +62,9 @@ export default function KioskPage() {
             </div>
             <div className="leading-tight">
               <p className="text-sm font-semibold">Cyber-Attendance</p>
-              <p className="text-[11px] text-muted-foreground">Trusted check-in kiosk</p>
+              <p className="text-[11px] text-muted-foreground">
+                Trusted check-in kiosk
+              </p>
             </div>
           </div>
           <Button asChild variant="ghost" size="sm" className="gap-1">
@@ -80,7 +92,8 @@ export default function KioskPage() {
                   Scan to check in
                 </h1>
                 <p className="mx-auto mt-2 max-w-sm text-center text-sm text-muted-foreground">
-                  Point your camera at the code. We'll verify your identity and location instantly.
+                  Point your camera at the code. We'll verify your identity and
+                  location instantly.
                 </p>
 
                 <div className="mt-6 flex justify-center">
@@ -91,8 +104,18 @@ export default function KioskPage() {
 
                 <div className="mt-6 flex items-center justify-between rounded-xl bg-muted/60 px-4 py-3 text-xs">
                   <div>
-                    <p className="font-medium text-foreground" suppressHydrationWarning>{time}</p>
-                    <p className="text-muted-foreground" suppressHydrationWarning>{date}</p>
+                    <p
+                      className="font-medium text-foreground"
+                      suppressHydrationWarning
+                    >
+                      {time}
+                    </p>
+                    <p
+                      className="text-muted-foreground"
+                      suppressHydrationWarning
+                    >
+                      {date}
+                    </p>
                   </div>
                   <div className="inline-flex items-center gap-1.5 text-muted-foreground">
                     <RefreshCw className="h-3.5 w-3.5" />
@@ -109,7 +132,9 @@ export default function KioskPage() {
             </div>
 
             <p className="mt-6 text-center text-xs text-muted-foreground">
-              Need help? Ask reception or text <span className="font-medium text-foreground">CHECKIN</span> to 55-123.
+              Need help? Ask reception or text{" "}
+              <span className="font-medium text-foreground">CHECKIN</span> to
+              55-123.
             </p>
 
             {/* FAQ Section */}
@@ -158,7 +183,8 @@ function FaqAccordion() {
       >
         <div className="space-y-4 px-5 pb-5">
           <p className="text-sm leading-relaxed text-muted-foreground">
-            No. Cyber-Attendance uses a multi-layered verification system that makes faking a check-in practically impossible:
+            No. {import.meta.env.VITE_APP_NAME || "ParousiaAdsum"} uses a multi-layered verification system
+            that makes faking a check-in practically impossible:
           </p>
 
           <div className="space-y-3">
@@ -187,7 +213,8 @@ function FaqAccordion() {
           <div className="flex items-center gap-2 rounded-xl border border-[color-mix(in_oklab,var(--color-success)_20%,transparent)] bg-[color-mix(in_oklab,var(--color-success)_10%,transparent)] px-4 py-3">
             <Shield className="h-4 w-4 shrink-0 text-[var(--color-success)]" />
             <p className="text-xs font-medium text-[color-mix(in_oklab,var(--color-success)_70%,var(--color-foreground))]">
-              All four layers must align for a check-in to be accepted. If any one fails, the entry is flagged for review.
+              All four layers must align for a check-in to be accepted. If any
+              one fails, the entry is flagged for review.
             </p>
           </div>
         </div>
@@ -212,7 +239,9 @@ function FaqFeature({
       </div>
       <div>
         <p className="text-sm font-semibold text-foreground">{title}</p>
-        <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{description}</p>
+        <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+          {description}
+        </p>
       </div>
     </div>
   );
