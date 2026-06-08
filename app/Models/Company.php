@@ -19,6 +19,7 @@ final class Company extends Model
         'latitude',
         'longitude',
         'allowed_radius',
+        'features',
     ];
 
     /**
@@ -30,6 +31,7 @@ final class Company extends Model
             'latitude' => 'float',
             'longitude' => 'float',
             'allowed_radius' => 'float',
+            'features' => 'array',
         ];
     }
 
