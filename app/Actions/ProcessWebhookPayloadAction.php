@@ -6,6 +6,7 @@ namespace App\Actions;
 
 use App\DTOs\WebhookPayloadData;
 use App\Jobs\ProcessStaffAttendance;
+use Illuminate\Support\Facades\Log;
 
 final readonly class ProcessWebhookPayloadAction
 {
@@ -14,6 +15,7 @@ final readonly class ProcessWebhookPayloadAction
      */
     public function execute(WebhookPayloadData $data): void
     {
+        Log::info('--- ATTEMPTING DISPATCH ---');
         ProcessStaffAttendance::dispatch(
             $data->platform,
             $data->platformId,
@@ -21,5 +23,6 @@ final readonly class ProcessWebhookPayloadAction
             $data->longitude,
             $data->metadata
         );
+        Log::info('--- DISPATCH SUCCESSFUL ---');
     }
 }

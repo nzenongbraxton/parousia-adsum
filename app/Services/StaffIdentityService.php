@@ -17,8 +17,12 @@ final readonly class StaffIdentityService
     public function resolvePlatformUser(string $platform, string $platformId): User
     {
         $user = User::query()
-            ->where('platform', $platform)
-            ->where('platform_id', $platformId)
+            ->when(
+                $platform === 'telegram',
+                fn ($query) => $query->where(fn ($q) => $q->where('telegram_id', $platformId)
+                    ->orWhere(fn ($sub) => $sub->where('platform', $platform)->where('platform_id', $platformId))),
+                fn ($query) => $query->where('platform', $platform)->where('platform_id', $platformId)
+            )
             ->first();
 
         if (! $user instanceof User) {

@@ -69,4 +69,15 @@ final class ProcessStaffAttendance implements ShouldQueue
             'metadata' => $this->metadata,
         ]);
     }
+
+    /**
+     * Handle a job failure.
+     */
+    public function failed(Throwable $exception): void
+    {
+        \Illuminate\Support\Facades\Log::error("ProcessStaffAttendance failed: " . $exception->getMessage(), [
+            'platform' => $this->platform,
+            'platform_id' => $this->platformId,
+        ]);
+    }
 }
