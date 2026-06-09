@@ -63,8 +63,17 @@ final class WebhookPayloadRequest extends FormRequest
      */
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
+        // Log the failure so we can still debug if needed
         \Illuminate\Support\Facades\Log::warning('--- WEBHOOK VALIDATION FAILED ---', $validator->errors()->toArray());
         
-        parent::failedValidation($validator);
+        // Return 200 OK so webhook providers (like Telegram) don't endlessly retry 
+        // messages we intentionally ignore (like text messages without GPS).
+        throw new \Illuminate\Http\Exceptions\HttpResponseException(
+            response()->json([
+                'status' => 'ignored',
+                'reason' => 'Validation failed (e.g. missing GPS location)',
+                'errors' => $validator->errors()
+            ], 200)
+        );
     }
 }
