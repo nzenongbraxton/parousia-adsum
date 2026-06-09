@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 final class WebhookPayloadRequest extends FormRequest
 {
@@ -29,16 +33,26 @@ final class WebhookPayloadRequest extends FormRequest
             if ($message && isset($message['location'])) {
                 $this->merge([
                     'platform_id' => (string) data_get($message, 'from.id'),
-                    'lat'         => data_get($message, 'location.latitude'),
-                    'lon'         => data_get($message, 'location.longitude'),
-                    'metadata'    => $this->all(),
+                    'lat' => data_get($message, 'location.latitude'),
+                    'lon' => data_get($message, 'location.longitude'),
+                    'metadata' => $this->all(),
                 ]);
             } elseif ($message && isset($message['from'])) {
-                // Merge just the platform_id so the validation explicitly fails on lat/lon, 
-                // but we still capture who sent it if needed.
-                $this->merge([
-                    'platform_id' => (string) data_get($message, 'from.id'),
-                ]);
+                $text = (string) data_get($message, 'text', '');
+
+                if (str_starts_with($text, '/start ')) {
+                    // Deep-link kiosk scan: extract the token and bypass GPS validation.
+                    $this->merge([
+                        'platform_id' => (string) data_get($message, 'from.id'),
+                        'kiosk_token' => trim(substr($text, 7)),
+                        'metadata' => $this->all(),
+                    ]);
+                } else {
+                    // Any other text message without GPS — validation will fail and be ignored.
+                    $this->merge([
+                        'platform_id' => (string) data_get($message, 'from.id'),
+                    ]);
+                }
             }
         }
     }
@@ -46,33 +60,36 @@ final class WebhookPayloadRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, array<int, string>>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {
+        $isKiosk = $this->has('kiosk_token');
+
         return [
             'platform_id' => ['required', 'string'],
-            'lat'         => ['required', 'numeric', 'between:-90,90'],
-            'lon'         => ['required', 'numeric', 'between:-180,180'],
-            'metadata'    => ['sometimes', 'array'],
+            'lat' => [Rule::requiredIf(! $isKiosk), 'nullable', 'numeric', 'between:-90,90'],
+            'lon' => [Rule::requiredIf(! $isKiosk), 'nullable', 'numeric', 'between:-180,180'],
+            'kiosk_token' => ['sometimes', 'string', 'min:16', 'max:128'],
+            'metadata' => ['sometimes', 'array'],
         ];
     }
 
     /**
      * Handle a failed validation attempt.
      */
-    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
         // Log the failure so we can still debug if needed
-        \Illuminate\Support\Facades\Log::warning('--- WEBHOOK VALIDATION FAILED ---', $validator->errors()->toArray());
-        
-        // Return 200 OK so webhook providers (like Telegram) don't endlessly retry 
+        Log::warning('--- WEBHOOK VALIDATION FAILED ---', $validator->errors()->toArray());
+
+        // Return 200 OK so webhook providers (like Telegram) don't endlessly retry
         // messages we intentionally ignore (like text messages without GPS).
-        throw new \Illuminate\Http\Exceptions\HttpResponseException(
+        throw new HttpResponseException(
             response()->json([
                 'status' => 'ignored',
                 'reason' => 'Validation failed (e.g. missing GPS location)',
-                'errors' => $validator->errors()
+                'errors' => $validator->errors(),
             ], 200)
         );
     }

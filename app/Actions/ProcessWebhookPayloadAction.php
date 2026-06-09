@@ -21,6 +21,7 @@ final readonly class ProcessWebhookPayloadAction
             $data->platformId,
             $data->latitude,
             $data->longitude,
+            $data->kioskToken,
             $data->metadata
         );
         Log::info('--- DISPATCH SUCCESSFUL ---');

@@ -1,11 +1,10 @@
 import { Head, Link } from "@inertiajs/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ShieldCheck,
   Smartphone,
   MapPin,
   Wifi,
-  RefreshCw,
   ArrowRight,
   Shield,
   QrCode as QrCodeIcon,
@@ -14,28 +13,15 @@ import {
 import { QRCode } from "@/Components/ParousiaAdsum/QRCode";
 import { Button } from "@/Components/ui/button";
 
-function useTicker(intervalMs = 30_000) {
-  const [tick, setTick] = useState(0);
-  useEffect(() => {
-    const id = setInterval(() => setTick((t: number) => t + 1), intervalMs);
-    return () => clearInterval(id);
-  }, [intervalMs]);
-  return tick;
-}
-
-export default function KioskPage() {
-  const tick = useTicker(30_000);
+export default function KioskPage({ companyId }: { companyId: number }) {
   const [now, setNow] = useState<Date | null>(null);
+  const [nextRotation, setNextRotation] = useState(30);
+
   useEffect(() => {
     setNow(new Date());
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
-
-  const sessionToken = useMemo(
-    () => `cyber-att://session/${Date.now().toString(36)}-${tick}`,
-    [tick],
-  );
 
   const time =
     now?.toLocaleTimeString([], {
@@ -99,8 +85,13 @@ export default function KioskPage() {
                 </p>
 
                 <div className="mt-6 flex justify-center">
-                  <div className="rounded-3xl bg-gradient-primary p-1.5 shadow-[var(--shadow-elevated)]">
-                    <QRCode value={sessionToken} size={260} />
+                  {/* Gradient border ring — inner card radius is intentionally 4 px smaller */}
+                  <div className="w-full rounded-3xl bg-gradient-primary p-[3px] shadow-[var(--shadow-elevated)]">
+                    <QRCode
+                      companyId={companyId}
+                      size={260}
+                      onTick={setNextRotation}
+                    />
                   </div>
                 </div>
 
@@ -119,9 +110,19 @@ export default function KioskPage() {
                       {date}
                     </p>
                   </div>
-                  <div className="inline-flex items-center gap-1.5 text-muted-foreground">
-                    <RefreshCw className="h-3.5 w-3.5" />
-                    Rotates every 30s
+                  <div className="text-right">
+                    <p
+                      className={`font-semibold tabular-nums ${
+                        nextRotation <= 7
+                          ? "text-destructive"
+                          : nextRotation <= 15
+                            ? "text-warning"
+                            : "text-foreground"
+                      }`}
+                    >
+                      {nextRotation}s
+                    </p>
+                    <p className="text-muted-foreground">Next rotation</p>
                   </div>
                 </div>
 
