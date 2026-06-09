@@ -1,0 +1,35 @@
+{
+  "update_id": 987654321,
+  "message": {
+    "message_id": 105,
+    "from": {
+      "id": 1122334455,
+      "is_bot": false,
+      "first_name": "Cyber-Lord",
+      "username": "mcbraxton"
+    },
+    "chat": { "id": 1122334455, "type": "private" },
+    "date": 1717015000,
+    "text": "/checkin",
+    "location": { "latitude": 4.1538, "longitude": 9.241 }
+  },
+  "platform_id": "1122334455",
+  "lat": 4.1538,
+  "lon": 9.241,
+  "metadata": {
+    "update_id": 987654321,
+    "message": {
+      "message_id": 105,
+      "from": {
+        "id": 1122334455,
+        "is_bot": false,
+        "first_name": "Cyber-Lord",
+        "username": "mcbraxton"
+      },
+      "chat": { "id": 1122334455, "type": "private" },
+      "date": 1717015000,
+      "text": "/checkin",
+      "location": { "latitude": 4.1538, "longitude": 9.241 }
+    }
+  }
+}
