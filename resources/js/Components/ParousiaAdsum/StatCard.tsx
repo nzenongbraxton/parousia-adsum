@@ -10,7 +10,7 @@ export function StatCard({
 }: {
   label: string;
   value: string;
-  delta: string;
+  delta?: string;
   positive?: boolean;
   icon: LucideIcon;
   tint?: "primary" | "success" | "warning" | "info";
@@ -42,23 +42,25 @@ export function StatCard({
           <Icon className="h-4 w-4" />
         </div>
       </div>
-      <div className="mt-3 flex items-center gap-1.5 text-xs">
-        {positive ? (
-          <TrendingUp className="h-3.5 w-3.5 text-[var(--color-success)]" />
-        ) : (
-          <TrendingDown className="h-3.5 w-3.5 text-[var(--color-destructive)]" />
-        )}
-        <span
-          className={
-            positive
-              ? "font-medium text-[color-mix(in_oklab,var(--color-success)_70%,var(--color-foreground))]"
-              : "font-medium text-[color-mix(in_oklab,var(--color-destructive)_70%,var(--color-foreground))]"
-          }
-        >
-          {delta}
-        </span>
-        <span className="text-muted-foreground">vs last week</span>
-      </div>
+      {delta !== undefined && (
+        <div className="mt-3 flex items-center gap-1.5 text-xs">
+          {positive ? (
+            <TrendingUp className="h-3.5 w-3.5 text-[var(--color-success)]" />
+          ) : (
+            <TrendingDown className="h-3.5 w-3.5 text-[var(--color-destructive)]" />
+          )}
+          <span
+            className={
+              positive
+                ? "font-medium text-[color-mix(in_oklab,var(--color-success)_70%,var(--color-foreground))]"
+                : "font-medium text-[color-mix(in_oklab,var(--color-destructive)_70%,var(--color-foreground))]"
+            }
+          >
+            {delta}
+          </span>
+          <span className="text-muted-foreground">vs last week</span>
+        </div>
+      )}
     </div>
   );
 }

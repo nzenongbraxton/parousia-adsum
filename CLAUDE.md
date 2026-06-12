@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ParousiaAdsum ("Cyber-Attendance") is an attendance verification system that uses QR codes, GPS geofencing, IP verification, and SMS to prevent fake check-ins. It has two separate applications in one repo:
+ParousiaAdsum is an attendance verification system that uses QR codes, GPS geofencing, IP verification, and SMS to prevent fake check-ins. It has two separate applications in one repo:
 
 1. **Laravel backend** (root) — Laravel 13 + Inertia.js + React 18 (Breeze scaffold). Serves auth, profile management, and will house the API.
 2. **TanStack Start frontend** (`frontend/`) — React 19 + TanStack Router/Start + shadcn/ui + Cloudflare Workers. The public-facing kiosk and admin dashboard. This is a separate app with its own `package.json`, build pipeline, and deployment target.

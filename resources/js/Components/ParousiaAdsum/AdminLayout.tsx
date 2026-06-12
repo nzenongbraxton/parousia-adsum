@@ -3,6 +3,7 @@ import { SidebarProvider, SidebarTrigger } from "@/Components/ui/sidebar";
 import { AdminSidebar } from "./AdminSidebar";
 import { Bell, Search } from "lucide-react";
 import { Input } from "@/Components/ui/input";
+import { Toast } from "@/Components/Toast";
 
 export function AdminLayout({
   title,
@@ -56,6 +57,7 @@ export function AdminLayout({
           </main>
         </div>
       </div>
+      <Toast />
     </SidebarProvider>
   );
 }

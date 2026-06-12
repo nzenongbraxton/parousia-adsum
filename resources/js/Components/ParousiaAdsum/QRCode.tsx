@@ -158,7 +158,7 @@ export function QRCode({
         <div
           className={`transition-opacity duration-300 ${
             isLoading && token ? "opacity-40" : "opacity-100"
-          }`}
+          } border-8 border-primary p-4`}
         >
           <div key={token} className="animate-in fade-in duration-500">
             <QRCodeSVG

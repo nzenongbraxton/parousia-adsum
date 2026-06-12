@@ -49,7 +49,7 @@ export default function KioskPage({ companyId }: { companyId: number }) {
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div className="leading-tight">
-              <p className="text-sm font-semibold">Cyber-Attendance</p>
+              <p className="text-sm font-semibold">ParousiaAdsum</p>
               <p className="text-[11px] text-muted-foreground">
                 Trusted check-in kiosk
               </p>

@@ -1,6 +1,6 @@
 # AGENTS.md — ParousiaAdsum
 
-ParousiaAdsum ("Cyber-Attendance") is an attendance verification system using QR codes, GPS geofencing, IP verification, and SMS to prevent fake check-ins. Laravel 13 monolith with Inertia.js + React 18.
+ParousiaAdsum an attendance verification system using QR codes, GPS geofencing, IP verification, and SMS to prevent fake check-ins. Laravel 13 monolith with Inertia.js + React 18.
 
 ## Quick-start
 

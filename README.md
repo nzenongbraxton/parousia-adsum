@@ -1,13 +1,13 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://banners.beyondco.de/ParousiaAdsum.png?theme=dark&package_manager=Laravel&package_name=13&pattern=architect&style=style_1&description=Cyber-Attendance+Verification+System&md=1&showWatermark=1&fontSize=100px&images=clipboard-check">
-    <img src="https://banners.beyondco.de/ParousiaAdsum.png?theme=light&package_manager=Laravel&package_name=13&pattern=architect&style=style_1&description=Cyber-Attendance+Verification+System&md=1&showWatermark=1&fontSize=100px&images=clipboard-check" alt="ParousiaAdsum">
+    <source media="(prefers-color-scheme: dark)" srcset="https://banners.beyondco.de/ParousiaAdsum.png?theme=dark&package_manager=Laravel&package_name=13&pattern=architect&style=style_1&description=ParousiaAdsum+Verification+System&md=1&showWatermark=1&fontSize=100px&images=clipboard-check">
+    <img src="https://banners.beyondco.de/ParousiaAdsum.png?theme=light&package_manager=Laravel&package_name=13&pattern=architect&style=style_1&description=ParousiaAdsum+Verification+System&md=1&showWatermark=1&fontSize=100px&images=clipboard-check" alt="ParousiaAdsum">
   </picture>
 </p>
 
 # ParousiaAdsum
 
-**Cyber-Attendance** — an attendance verification system that prevents fake check-ins through multi-factor verification: QR codes, GPS geofencing, IP verification, and SMS confirmation.
+**ParousiaAdsum** — an attendance verification system that prevents fake check-ins through multi-factor verification: QR codes, GPS geofencing, IP verification, and SMS confirmation.
 
 Built on Laravel 13 with Inertia.js, React 18, and Tailwind CSS.
 

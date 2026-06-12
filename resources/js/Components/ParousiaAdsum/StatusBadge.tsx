@@ -1,7 +1,7 @@
-import { MapPin, Wifi, MessageSquare, ShieldAlert } from "lucide-react";
+import { MapPin, Wifi, MessageSquare, ShieldAlert, QrCode } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type CheckinMethod = "GPS-Verified" | "IP-Verified" | "SMS-Entry" | "Flagged";
+export type CheckinMethod = "GPS-Verified" | "IP-Verified" | "SMS-Entry" | "QR-Kiosk" | "Flagged";
 
 const map: Record<
   CheckinMethod,
@@ -24,6 +24,12 @@ const map: Record<
     classes:
       "bg-[color-mix(in_oklab,var(--color-warning)_18%,transparent)] text-[color-mix(in_oklab,var(--color-warning)_50%,var(--color-foreground))] ring-1 ring-inset ring-[color-mix(in_oklab,var(--color-warning)_40%,transparent)]",
     label: "SMS Entry",
+  },
+  "QR-Kiosk": {
+    icon: QrCode,
+    classes:
+      "bg-[color-mix(in_oklab,var(--color-info)_12%,transparent)] text-[color-mix(in_oklab,var(--color-info)_75%,var(--color-foreground))] ring-1 ring-inset ring-[color-mix(in_oklab,var(--color-info)_30%,transparent)]",
+    label: "QR Kiosk",
   },
   Flagged: {
     icon: ShieldAlert,

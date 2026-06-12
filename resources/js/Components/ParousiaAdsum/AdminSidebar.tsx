@@ -41,7 +41,7 @@ export function AdminSidebar() {
           </div>
           {!collapsed && (
             <div className="flex flex-col leading-tight">
-              <span className="text-sm font-semibold">Cyber-Attendance</span>
+              <span className="text-sm font-semibold">ParousiaAdsum</span>
               <span className="text-[11px] text-muted-foreground">Admin Console</span>
             </div>
           )}
